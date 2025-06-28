@@ -10,7 +10,7 @@ module.exports = {
     host: process.env.DB_HOST || "localhost",
     user: process.env.DB_USER || "root",
     password: process.env.DB_PASSWORD || "",
-    database: process.env.DB_NAME || "awms",
+    database: process.env.DB_NAME || "emsp",
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
@@ -21,7 +21,7 @@ module.exports = {
 
   // JWT配置
   jwt: {
-    secret: process.env.JWT_SECRET || "awms-secret-key",
+    secret: process.env.JWT_SECRET || "emsp-secret-key",
     expiresIn: process.env.JWT_EXPIRES_IN || "24h",
   },
 

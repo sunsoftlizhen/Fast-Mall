@@ -1,6 +1,6 @@
-# AWMS 微服务部署指南
+# EMSP 微服务部署指南
 
-本文档详细介绍了 AWMS 微服务系统的部署方式，包括本地开发环境、Docker 容器化部署和 Kubernetes 集群部署。
+本文档详细介绍了 EMSP 微服务系统的部署方式，包括本地开发环境、Docker 容器化部署和 Kubernetes 集群部署。
 
 ## 目录
 
@@ -87,16 +87,16 @@ cd nacos/bin
 mysql -u root -p
 
 # 创建数据库和用户
-CREATE DATABASE awms CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE emsp CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE DATABASE nacos CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'awms'@'%' IDENTIFIED BY 'awms123456';
-GRANT ALL PRIVILEGES ON awms.* TO 'awms'@'%';
-GRANT ALL PRIVILEGES ON nacos.* TO 'awms'@'%';
+CREATE USER 'emsp'@'%' IDENTIFIED BY 'emsp123456';
+GRANT ALL PRIVILEGES ON emsp.* TO 'emsp'@'%';
+GRANT ALL PRIVILEGES ON nacos.* TO 'emsp'@'%';
 FLUSH PRIVILEGES;
 
 # 导入初始化脚本
-mysql -u awms -p awms < scripts/init-database.sql
-mysql -u awms -p nacos < scripts/nacos-mysql.sql
+mysql -u emsp -p emsp < scripts/init-database.sql
+mysql -u emsp -p nacos < scripts/nacos-mysql.sql
 ```
 
 ### 3. 配置 Nacos
@@ -180,7 +180,7 @@ docker-compose -f docker/docker-compose.yml build
 
 # 或者单独构建
 cd auth-service
-docker build -t awms/auth-service:1.0.0 .
+docker build -t emsp/auth-service:1.0.0 .
 ```
 
 ### 2. 启动服务
@@ -204,7 +204,7 @@ docker-compose logs -f auth-service
 ```dockerfile
 FROM openjdk:11-jre-slim
 
-LABEL maintainer="awms-team"
+LABEL maintainer="emsp-team"
 
 # 设置时区
 ENV TZ=Asia/Shanghai
@@ -227,18 +227,18 @@ ENTRYPOINT ["java", "-jar", "/app/app.jar"]
 
 ```bash
 # .env文件
-MYSQL_ROOT_PASSWORD=awms123456
-MYSQL_DATABASE=awms
-MYSQL_USER=awms
-MYSQL_PASSWORD=awms123456
+MYSQL_ROOT_PASSWORD=emsp123456
+MYSQL_DATABASE=emsp
+MYSQL_USER=emsp
+MYSQL_PASSWORD=emsp123456
 
-REDIS_PASSWORD=awms123456
+REDIS_PASSWORD=emsp123456
 
 NACOS_USERNAME=nacos
 NACOS_PASSWORD=nacos
 
-RABBITMQ_USER=awms
-RABBITMQ_PASSWORD=awms123456
+RABBITMQ_USER=emsp
+RABBITMQ_PASSWORD=emsp123456
 ```
 
 ## Kubernetes 部署
@@ -247,18 +247,18 @@ RABBITMQ_PASSWORD=awms123456
 
 ```bash
 # 创建命名空间
-kubectl create namespace awms
+kubectl create namespace emsp
 
 # 创建配置映射
-kubectl create configmap awms-config \
+kubectl create configmap emsp-config \
   --from-file=config/ \
-  --namespace=awms
+  --namespace=emsp
 
 # 创建密钥
-kubectl create secret generic awms-secret \
-  --from-literal=mysql-password=awms123456 \
-  --from-literal=redis-password=awms123456 \
-  --namespace=awms
+kubectl create secret generic emsp-secret \
+  --from-literal=mysql-password=emsp123456 \
+  --from-literal=redis-password=emsp123456 \
+  --namespace=emsp
 ```
 
 ### 2. 部署基础服务

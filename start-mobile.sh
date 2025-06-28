@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "🚀 启动移动端商城应用..."
+echo "🚀 启动 EMSP 移动端商城..."
 
 # 检查Node.js版本
 echo "📋 检查环境..."

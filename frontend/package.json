@@ -1,7 +1,7 @@
 {
-  "name": "awms-frontend",
+  "name": "emsp-frontend",
   "version": "1.0.0",
-  "description": "后台管理系统 - 前端应用",
+  "description": "电商与朋友圈社交平台 - 管理后台",
   "private": true,
   "scripts": {
     "dev": "vite",

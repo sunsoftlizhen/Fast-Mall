@@ -172,7 +172,7 @@
       :show="showAboutDialog"
       @update:show="(val) => (showAboutDialog = val)"
       title="关于我们"
-      message="移动商城 v1.0.0<br/>为用户提供便捷的购物体验<br/><br/>联系邮箱：support@awms.com<br/>客服热线：400-123-4567"
+      message="EMSP 移动商城 v1.0.0<br/>电商与朋友圈社交平台<br/>为用户提供便捷的购物体验<br/><br/>联系邮箱：support@emsp.com<br/>客服热线：400-123-4567"
       confirm-button-text="确定"
       class="about-dialog"
     />

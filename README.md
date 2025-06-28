@@ -1,10 +1,10 @@
-# AWMS - 全栈电商与社交管理系统
+# EMSP - 电商与朋友圈社交平台
 
-一个基于现代化技术栈构建的全栈电商与社交管理系统，包含管理后台、移动端商城和微服务架构后端。
+一个基于现代化技术栈构建的全栈电商与社交平台，包含管理后台、移动端商城和微服务架构后端。
 
 ## 🎯 项目概述
 
-AWMS (Advanced Warehouse Management System) 是一个功能完整的电商与社交平台，提供：
+EMSP (E-commerce & Moments Social Platform) 是一个功能完整的电商与社交平台，提供：
 
 - **管理后台**: 基于 Vue3 + Element Plus 的现代化管理界面
 - **移动端商城**: 基于 Vue3 + Vant4 的移动端购物应用
@@ -58,7 +58,7 @@ AWMS (Advanced Warehouse Management System) 是一个功能完整的电商与社
 ## 📁 项目结构
 
 ```
-awms/
+emsp/
 ├── frontend/                    # Vue3 管理后台
 │   ├── src/
 │   │   ├── views/              # 页面组件
@@ -101,7 +101,7 @@ awms/
 │   │   └── utils/              # 工具类
 │   └── package.json
 │
-├── awms-microservices/          # Spring Boot 微服务
+├── emsp-microservices/          # Spring Boot 微服务
 │   ├── gateway/                # API 网关
 │   ├── auth-service/           # 认证服务
 │   ├── user-service/           # 用户服务
@@ -165,20 +165,20 @@ awms/
 
 ```bash
 git clone <repository-url>
-cd awms
+cd emsp
 ```
 
 ### 2. 数据库初始化
 
 ```bash
 # 创建数据库
-mysql -u root -p -e "CREATE DATABASE awms CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+mysql -u root -p -e "CREATE DATABASE emsp CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 
 # 导入数据库结构和数据
-mysql -u root -p awms < database/init.sql
-mysql -u root -p awms < database/mobile-app.sql
-mysql -u root -p awms < database/products.sql
-mysql -u root -p awms < database/product-permissions.sql
+mysql -u root -p emsp < database/init.sql
+mysql -u root -p emsp < database/mobile-app.sql
+mysql -u root -p emsp < database/products.sql
+mysql -u root -p emsp < database/product-permissions.sql
 ```
 
 ### 3. 配置后端

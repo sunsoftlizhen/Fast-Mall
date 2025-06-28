@@ -1,8 +1,8 @@
-# 后台管理系统开发文档
+# EMSP 开发文档
 
 ## 项目概述
 
-这是一个基于 Vue3 + Koa + MySQL 的现代化后台管理系统，支持用户管理、角色权限管理、商品管理等核心功能。
+EMSP (E-commerce & Moments Social Platform) 是一个基于 Vue3 + Koa + MySQL 的现代化电商与社交平台，支持用户管理、角色权限管理、商品管理、朋友圈社交等核心功能。
 
 ## 技术栈
 
@@ -95,7 +95,7 @@
 ## 项目结构
 
 ```
-awms/
+emsp/
 ├── backend/                 # 后端代码
 │   ├── src/
 │   │   ├── controllers/     # 控制器
@@ -145,12 +145,12 @@ awms/
 
 ```bash
 # 创建数据库
-mysql -u root -p -e "CREATE DATABASE awms CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+mysql -u root -p -e "CREATE DATABASE emsp CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 
 # 导入初始化脚本
-mysql -u root -p awms < database/init.sql
-mysql -u root -p awms < database/products.sql
-mysql -u root -p awms < database/product-permissions.sql
+mysql -u root -p emsp < database/init.sql
+mysql -u root -p emsp < database/products.sql
+mysql -u root -p emsp < database/product-permissions.sql
 ```
 
 ### 3. 启动项目
@@ -254,8 +254,8 @@ cd frontend && npm install && npm run dev
 
 ```bash
 # 构建镜像
-docker build -t awms-backend ./backend
-docker build -t awms-frontend ./frontend
+docker build -t emsp-backend ./backend
+docker build -t emsp-frontend ./frontend
 
 # 运行容器
 docker-compose up -d

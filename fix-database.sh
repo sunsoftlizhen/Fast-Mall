@@ -108,13 +108,13 @@ echo ""
 
 # 4. 检查并创建数据库
 echo -e "${BLUE}📋 步骤 4: 检查并创建数据库${NC}"
-if $MYSQL_CMD -e "USE awms;" &> /dev/null; then
-    echo -e "${GREEN}✅ 数据库 'awms' 已存在${NC}"
+if $MYSQL_CMD -e "USE emsp;" &> /dev/null; then
+    echo -e "${GREEN}✅ 数据库 'emsp' 已存在${NC}"
 else
-    echo -e "${YELLOW}⚠️  数据库 'awms' 不存在，正在创建...${NC}"
-    $MYSQL_CMD -e "CREATE DATABASE awms DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+    echo -e "${YELLOW}⚠️  数据库 'emsp' 不存在，正在创建...${NC}"
+    $MYSQL_CMD -e "CREATE DATABASE emsp DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
     if [ $? -eq 0 ]; then
-        echo -e "${GREEN}✅ 数据库 'awms' 创建成功${NC}"
+        echo -e "${GREEN}✅ 数据库 'emsp' 创建成功${NC}"
     else
         echo -e "${RED}❌ 数据库创建失败${NC}"
         exit 1
@@ -124,23 +124,23 @@ echo ""
 
 # 5. 检查并导入数据表
 echo -e "${BLUE}📋 步骤 5: 检查并导入数据表${NC}"
-if $MYSQL_CMD -e "USE awms; SHOW TABLES LIKE 'users';" | grep -q users; then
+if $MYSQL_CMD -e "USE emsp; SHOW TABLES LIKE 'users';" | grep -q users; then
     echo -e "${GREEN}✅ 数据表已存在${NC}"
     
     # 检查用户数量
-    user_count=$($MYSQL_CMD -e "USE awms; SELECT COUNT(*) FROM users;" | tail -n 1)
+    user_count=$($MYSQL_CMD -e "USE emsp; SELECT COUNT(*) FROM users;" | tail -n 1)
     echo -e "${BLUE}📊 当前用户数量: ${user_count}${NC}"
 else
     echo -e "${YELLOW}⚠️  数据表不存在，正在导入初始化脚本...${NC}"
     
     if [ -f "database/init.sql" ]; then
-        $MYSQL_CMD awms < database/init.sql
+        $MYSQL_CMD emsp < database/init.sql
         if [ $? -eq 0 ]; then
             echo -e "${GREEN}✅ 数据表导入成功${NC}"
             
             # 显示导入的用户
             echo -e "${BLUE}📋 默认用户账号:${NC}"
-            $MYSQL_CMD -e "USE awms; SELECT username, email, role_name FROM users u JOIN roles r ON u.role_id = r.id;" | column -t
+            $MYSQL_CMD -e "USE emsp; SELECT username, email, role_name FROM users u JOIN roles r ON u.role_id = r.id;" | column -t
         else
             echo -e "${RED}❌ 数据表导入失败${NC}"
             exit 1
@@ -161,7 +161,7 @@ if [ -f "backend/test-db-connection.js" ]; then
     export DB_HOST="localhost"
     export DB_USER="root"
     export DB_PASSWORD="$mysql_password"
-    export DB_NAME="awms"
+    export DB_NAME="emsp"
     
     echo -e "${BLUE}🔍 运行数据库连接测试...${NC}"
     node test-db-connection.js
@@ -201,7 +201,7 @@ if [ ! -f ".env" ]; then
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=$mysql_password
-DB_NAME=awms
+DB_NAME=emsp
 
 # JWT 配置
 JWT_SECRET=your-secret-key-here
@@ -222,7 +222,7 @@ echo -e "${BLUE}📋 步骤 9: 最终检查${NC}"
 echo -e "${GREEN}🎉 数据库修复完成！${NC}"
 echo ""
 echo -e "${BLUE}📋 系统信息摘要:${NC}"
-echo -e "   💾 数据库: awms"
+echo -e "   💾 数据库: emsp"
 echo -e "   👤 用户: root"
 echo -e "   🔗 连接: localhost:3306"
 echo -e "   📁 配置文件: backend/config.js"

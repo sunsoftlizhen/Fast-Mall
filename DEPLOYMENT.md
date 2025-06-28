@@ -1,6 +1,6 @@
-# AWMS 系统部署指南
+# EMSP 系统部署指南
 
-本文档详细介绍了 AWMS 全栈电商与社交管理系统的完整部署方案，包括开发环境、测试环境和生产环境的部署步骤。
+本文档详细介绍了 EMSP 电商与朋友圈社交平台的完整部署方案，包括开发环境、测试环境和生产环境的部署步骤。
 
 ## 📋 目录
 
@@ -17,7 +17,7 @@
 ## 🏗️ 系统架构
 
 ```
-AWMS 系统架构
+EMSP 系统架构
 ├── 前端应用
 │   ├── 管理后台 (Vue3 + Element Plus) - 端口 8081
 │   └── 移动端商城 (Vue3 + Vant4) - 端口 3001
@@ -72,14 +72,14 @@ AWMS 系统架构
 ```bash
 # 1. 克隆项目
 git clone <repository-url>
-cd awms
+cd emsp
 
 # 2. 配置数据库
-mysql -u root -p -e "CREATE DATABASE awms CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-mysql -u root -p awms < database/init.sql
-mysql -u root -p awms < database/mobile-app.sql
-mysql -u root -p awms < database/products.sql
-mysql -u root -p awms < database/product-permissions.sql
+mysql -u root -p -e "CREATE DATABASE emsp CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+mysql -u root -p emsp < database/init.sql
+mysql -u root -p emsp < database/mobile-app.sql
+mysql -u root -p emsp < database/products.sql
+mysql -u root -p emsp < database/product-permissions.sql
 
 # 3. 配置后端
 cd backend
@@ -172,17 +172,17 @@ sudo systemctl enable redis
 mysql -u root -p
 
 # 创建数据库和用户
-CREATE DATABASE awms CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'awms'@'localhost' IDENTIFIED BY 'awms123456';
-GRANT ALL PRIVILEGES ON awms.* TO 'awms'@'localhost';
+CREATE DATABASE emsp CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'emsp'@'localhost' IDENTIFIED BY 'emsp123456';
+GRANT ALL PRIVILEGES ON emsp.* TO 'emsp'@'localhost';
 FLUSH PRIVILEGES;
 EXIT;
 
 # 导入数据库结构和数据
-mysql -u awms -p awms < database/init.sql
-mysql -u awms -p awms < database/mobile-app.sql
-mysql -u awms -p awms < database/products.sql
-mysql -u awms -p awms < database/product-permissions.sql
+mysql -u emsp -p emsp < database/init.sql
+mysql -u emsp -p emsp < database/mobile-app.sql
+mysql -u emsp -p emsp < database/products.sql
+mysql -u emsp -p emsp < database/product-permissions.sql
 ```
 
 ### 3. 后端服务配置
@@ -204,9 +204,9 @@ module.exports = {
   port: 3000,
   database: {
     host: "localhost",
-    user: "awms",
-    password: "awms123456",
-    database: "awms",
+    user: "emsp",
+    password: "emsp123456",
+    database: "emsp",
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
@@ -278,28 +278,28 @@ sudo mysql_secure_installation
 
 # 创建生产数据库
 mysql -u root -p
-CREATE DATABASE awms_prod CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'awms_prod'@'localhost' IDENTIFIED BY 'strong-password-here';
-GRANT ALL PRIVILEGES ON awms_prod.* TO 'awms_prod'@'localhost';
+CREATE DATABASE emsp_prod CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'emsp_prod'@'localhost' IDENTIFIED BY 'strong-password-here';
+GRANT ALL PRIVILEGES ON emsp_prod.* TO 'emsp_prod'@'localhost';
 FLUSH PRIVILEGES;
 EXIT;
 
 # 导入数据
-mysql -u awms_prod -p awms_prod < database/init.sql
-mysql -u awms_prod -p awms_prod < database/mobile-app.sql
-mysql -u awms_prod -p awms_prod < database/products.sql
-mysql -u awms_prod -p awms_prod < database/product-permissions.sql
+mysql -u emsp_prod -p emsp_prod < database/init.sql
+mysql -u emsp_prod -p emsp_prod < database/mobile-app.sql
+mysql -u emsp_prod -p emsp_prod < database/products.sql
+mysql -u emsp_prod -p emsp_prod < database/product-permissions.sql
 ```
 
 ### 3. 应用部署
 
 ```bash
 # 创建应用目录
-sudo mkdir -p /var/www/awms
-sudo chown $USER:$USER /var/www/awms
+sudo mkdir -p /var/www/emsp
+sudo chown $USER:$USER /var/www/emsp
 
 # 克隆代码
-cd /var/www/awms
+cd /var/www/emsp
 git clone <repository-url> .
 
 # 后端配置
@@ -327,7 +327,7 @@ npm run build
 module.exports = {
   apps: [
     {
-      name: "awms-backend",
+      name: "emsp-backend",
       script: "./backend/app.js",
       instances: 2,
       exec_mode: "cluster",
@@ -355,14 +355,14 @@ pm2 save
 
 ### 5. Nginx 配置
 
-创建 `/etc/nginx/sites-available/awms`:
+创建 `/etc/nginx/sites-available/emsp`:
 
 ```nginx
 # 管理后台
 server {
     listen 80;
     server_name admin.yourdomain.com;
-    root /var/www/awms/frontend/dist;
+    root /var/www/emsp/frontend/dist;
     index index.html;
 
     location / {
@@ -386,7 +386,7 @@ server {
 server {
     listen 80;
     server_name mobile.yourdomain.com;
-    root /var/www/awms/mobile/dist;
+    root /var/www/emsp/mobile/dist;
     index index.html;
 
     location / {
@@ -409,7 +409,7 @@ server {
 
 ```bash
 # 启用站点
-sudo ln -s /etc/nginx/sites-available/awms /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/emsp /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl reload nginx
 ```
@@ -433,7 +433,7 @@ sudo crontab -e
 ### 1. 创建 Docker 网络
 
 ```bash
-docker network create awms-network
+docker network create emsp-network
 ```
 
 ### 2. 启动基础服务
@@ -441,22 +441,22 @@ docker network create awms-network
 ```bash
 # MySQL
 docker run -d \
-  --name awms-mysql \
-  --network awms-network \
-  -e MYSQL_ROOT_PASSWORD=awms123456 \
-  -e MYSQL_DATABASE=awms \
-  -e MYSQL_USER=awms \
-  -e MYSQL_PASSWORD=awms123456 \
+  --name emsp-mysql \
+  --network emsp-network \
+  -e MYSQL_ROOT_PASSWORD=emsp123456 \
+  -e MYSQL_DATABASE=emsp \
+  -e MYSQL_USER=emsp \
+  -e MYSQL_PASSWORD=emsp123456 \
   -p 3306:3306 \
-  -v awms-mysql-data:/var/lib/mysql \
+  -v emsp-mysql-data:/var/lib/mysql \
   mysql:8.0
 
 # Redis
 docker run -d \
-  --name awms-redis \
-  --network awms-network \
+  --name emsp-redis \
+  --network emsp-network \
   -p 6379:6379 \
-  redis:6.2-alpine redis-server --requirepass awms123456
+  redis:6.2-alpine redis-server --requirepass emsp123456
 ```
 
 ### 3. 构建应用镜像
@@ -507,12 +507,12 @@ version: "3.8"
 services:
   mysql:
     image: mysql:8.0
-    container_name: awms-mysql
+    container_name: emsp-mysql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: awms
-      MYSQL_USER: awms
+      MYSQL_DATABASE: emsp
+      MYSQL_USER: emsp
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - "3306:3306"
@@ -520,11 +520,11 @@ services:
       - mysql_data:/var/lib/mysql
       - ./database:/docker-entrypoint-initdb.d
     networks:
-      - awms-network
+      - emsp-network
 
   redis:
     image: redis:6.2-alpine
-    container_name: awms-redis
+    container_name: emsp-redis
     restart: always
     command: redis-server --requirepass ${REDIS_PASSWORD}
     ports:
@@ -532,18 +532,18 @@ services:
     volumes:
       - redis_data:/data
     networks:
-      - awms-network
+      - emsp-network
 
   backend:
     build: ./backend
-    container_name: awms-backend
+    container_name: emsp-backend
     restart: always
     environment:
       NODE_ENV: production
       DB_HOST: mysql
-      DB_USER: awms
+      DB_USER: emsp
       DB_PASSWORD: ${MYSQL_PASSWORD}
-      DB_NAME: awms
+      DB_NAME: emsp
       REDIS_HOST: redis
       REDIS_PASSWORD: ${REDIS_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
@@ -553,36 +553,36 @@ services:
       - mysql
       - redis
     networks:
-      - awms-network
+      - emsp-network
 
   frontend:
     build: ./frontend
-    container_name: awms-frontend
+    container_name: emsp-frontend
     restart: always
     ports:
       - "8081:80"
     depends_on:
       - backend
     networks:
-      - awms-network
+      - emsp-network
 
   mobile:
     build: ./mobile
-    container_name: awms-mobile
+    container_name: emsp-mobile
     restart: always
     ports:
       - "3001:80"
     depends_on:
       - backend
     networks:
-      - awms-network
+      - emsp-network
 
 volumes:
   mysql_data:
   redis_data:
 
 networks:
-  awms-network:
+  emsp-network:
     driver: bridge
 ```
 
@@ -620,7 +620,7 @@ mvn -version
 ### 2. 启动基础服务
 
 ```bash
-cd awms-microservices/docker
+cd emsp-microservices/docker
 
 # 启动基础设施
 docker-compose -f docker-compose-infrastructure.yml up -d
@@ -635,7 +635,7 @@ docker-compose ps
 ### 3. 编译微服务
 
 ```bash
-cd awms-microservices
+cd emsp-microservices
 
 # 使用构建脚本
 chmod +x build.sh
@@ -676,10 +676,10 @@ curl -X POST http://localhost:8080/auth/login \
 
 ```bash
 # PM2 日志
-pm2 logs awms-backend
+pm2 logs emsp-backend
 
 # Docker 日志
-docker logs awms-backend
+docker logs emsp-backend
 
 # 系统日志
 sudo journalctl -u nginx
@@ -711,19 +711,19 @@ redis-cli info stats
 # 创建备份脚本 backup.sh
 
 DATE=$(date +%Y%m%d_%H%M%S)
-BACKUP_DIR="/var/backups/awms"
+BACKUP_DIR="/var/backups/emsp"
 mkdir -p $BACKUP_DIR
 
 # 数据库备份
-mysqldump -u awms_prod -p awms_prod > $BACKUP_DIR/awms_$DATE.sql
+mysqldump -u emsp_prod -p emsp_prod > $BACKUP_DIR/emsp_$DATE.sql
 
 # 压缩备份
-gzip $BACKUP_DIR/awms_$DATE.sql
+gzip $BACKUP_DIR/emsp_$DATE.sql
 
 # 删除7天前的备份
 find $BACKUP_DIR -name "*.sql.gz" -mtime +7 -delete
 
-echo "Backup completed: awms_$DATE.sql.gz"
+echo "Backup completed: emsp_$DATE.sql.gz"
 ```
 
 **定时备份**:
@@ -747,7 +747,7 @@ cd frontend && npm run build
 cd ../mobile && npm run build
 
 # 重启后端服务
-pm2 restart awms-backend
+pm2 restart emsp-backend
 
 # 重新加载 Nginx
 sudo nginx -s reload
@@ -770,7 +770,7 @@ netstat -tlnp | grep 3306
 cat backend/config.js
 
 # 测试连接
-mysql -u awms -p awms
+mysql -u emsp -p emsp
 ```
 
 #### 2. 前端访问 404
@@ -780,7 +780,7 @@ mysql -u awms -p awms
 sudo nginx -t
 
 # 检查文件权限
-ls -la /var/www/awms/frontend/dist/
+ls -la /var/www/emsp/frontend/dist/
 
 # 查看 Nginx 日志
 sudo tail -f /var/log/nginx/error.log
@@ -791,7 +791,7 @@ sudo tail -f /var/log/nginx/error.log
 ```bash
 # 检查后端服务
 pm2 status
-pm2 logs awms-backend
+pm2 logs emsp-backend
 
 # 检查端口占用
 netstat -tlnp | grep 3000
@@ -808,7 +808,7 @@ free -h
 ps aux --sort=-%mem | head
 
 # 优化 PM2 配置
-pm2 restart awms-backend --max-memory-restart 1G
+pm2 restart emsp-backend --max-memory-restart 1G
 ```
 
 ### 日志分析

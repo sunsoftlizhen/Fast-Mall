@@ -8,7 +8,7 @@ router.get("/health", async (ctx) => {
     message: "服务正常运行",
     data: {
       timestamp: new Date().toISOString(),
-      server: "AWMS Backend",
+      server: "EMSP Backend",
       version: "1.0.0",
     },
   };

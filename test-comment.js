@@ -7,7 +7,7 @@ async function testComment() {
       host: "localhost",
       user: "root",
       password: "",
-      database: "awms",
+      database: "emsp",
     });
 
     console.log("数据库连接成功");

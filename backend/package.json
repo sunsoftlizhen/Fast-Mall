@@ -1,7 +1,7 @@
 {
-  "name": "awms-backend",
+  "name": "emsp-backend",
   "version": "1.0.0",
-  "description": "后台管理系统 - 后端服务",
+  "description": "电商与朋友圈社交平台 - 后端服务",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",

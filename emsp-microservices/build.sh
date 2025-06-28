@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# AWMS微服务自动化构建脚本
+# EMSP微服务自动化构建脚本
 # 使用方法: ./build.sh [all|service-name] [dev|test|prod]
 
 set -e
@@ -14,7 +14,7 @@ NC='\033[0m' # No Color
 
 # 配置
 VERSION="1.0.0"
-REGISTRY="registry.cn-hangzhou.aliyuncs.com/awms"
+REGISTRY="registry.cn-hangzhou.aliyuncs.com/emsp"
 SERVICES=("auth-service" "user-service" "product-service" "order-service" "moment-service" "gateway")
 
 # 函数定义
@@ -120,9 +120,9 @@ create_dockerfile() {
         cat > $service/Dockerfile << EOF
 FROM openjdk:11-jre-slim
 
-LABEL maintainer="awms-team"
+LABEL maintainer="emsp-team"
 LABEL version="$VERSION"
-LABEL description="AWMS $service"
+LABEL description="EMSP $service"
 
 # 设置时区
 ENV TZ=Asia/Shanghai
@@ -172,7 +172,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: $service
-  namespace: awms
+  namespace: emsp
   labels:
     app: $service
     version: v1
@@ -226,7 +226,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: $service
-  namespace: awms
+  namespace: emsp
   labels:
     app: $service
 spec:
@@ -272,7 +272,7 @@ cleanup() {
 
 # 显示帮助信息
 show_help() {
-    echo "AWMS微服务构建脚本"
+    echo "EMSP微服务构建脚本"
     echo ""
     echo "用法:"
     echo "  $0 [命令] [服务名] [环境]"

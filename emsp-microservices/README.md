@@ -1,11 +1,11 @@
-# AWMS 微服务架构后端系统
+# EMSP 微服务架构后端系统
 
 基于 Spring Boot + Spring Cloud 的微服务架构实现，提供完整的电商和社交功能。
 
 ## 系统架构
 
 ```
-awms-microservices/
+emsp-microservices/
 ├── gateway/                 # API网关服务
 ├── auth-service/           # 认证授权服务
 ├── user-service/           # 用户管理服务

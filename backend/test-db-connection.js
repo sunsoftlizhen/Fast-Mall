@@ -11,7 +11,7 @@ async function testConnection() {
         host: "localhost",
         user: "root",
         password: "",
-        database: "awms",
+        database: "emsp",
       },
     },
     {
@@ -20,7 +20,7 @@ async function testConnection() {
         host: process.env.DB_HOST || "localhost",
         user: process.env.DB_USER || "root",
         password: process.env.DB_PASSWORD || "",
-        database: process.env.DB_NAME || "awms",
+        database: process.env.DB_NAME || "emsp",
       },
     },
   ];
@@ -146,7 +146,7 @@ async function checkMySQLService() {
 
 // 主函数
 async function main() {
-  console.log("🚀 AWMS 数据库连接诊断工具\n");
+  console.log("🚀 EMSP 数据库连接诊断工具\n");
   console.log("=".repeat(50));
 
   await checkMySQLService();

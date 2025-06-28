@@ -1,7 +1,7 @@
 {
-  "name": "awms-mobile",
+  "name": "emsp-mobile",
   "version": "1.0.0",
-  "description": "移动端商城应用",
+  "description": "电商与朋友圈社交平台 - 移动端商城",
   "private": true,
   "scripts": {
     "dev": "vite",
