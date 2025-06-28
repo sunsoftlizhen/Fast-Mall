@@ -1,0 +1,84 @@
+/* 重置默认样式 */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* 全局变量 */
+:root {
+  --primary-color: #1989fa;
+  --success-color: #07c160;
+  --warning-color: #ff976a;
+  --danger-color: #ee0a24;
+  --text-color: #323233;
+  --text-color-2: #646566;
+  --text-color-3: #969799;
+  --border-color: #ebedf0;
+  --background-color: #f7f8fa;
+  --white: #ffffff;
+}
+
+/* 工具类 */
+.flex {
+  display: flex;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-primary {
+  color: var(--primary-color);
+}
+
+.text-muted {
+  color: var(--text-color-3);
+}
+
+.bg-white {
+  background-color: var(--white);
+}
+
+.page-container {
+  min-height: 100vh;
+  padding-bottom: 50px;
+}
+
+.product-card {
+  background: var(--white);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.moment-card {
+  background: var(--white);
+  border-radius: 8px;
+  margin-bottom: 10px;
+  padding: 15px;
+}

@@ -1,0 +1,28 @@
+{
+  "name": "awms-mobile",
+  "version": "1.0.0",
+  "description": "移动端商城应用",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.3.0",
+    "vue-router": "^4.2.0",
+    "pinia": "^2.1.0",
+    "vant": "^4.6.0",
+    "axios": "^1.4.0",
+    "@vant/use": "^1.6.0",
+    "dayjs": "^1.11.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.2.0",
+    "vite": "^4.3.0",
+    "unplugin-vue-components": "^0.25.0",
+    "unplugin-auto-import": "^0.16.0",
+    "vite-plugin-style-import": "^2.0.0",
+    "@vant/auto-import-resolver": "^1.2.0"
+  }
+}
