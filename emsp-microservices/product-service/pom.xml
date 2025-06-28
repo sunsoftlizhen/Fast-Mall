@@ -13,12 +13,12 @@
     </parent>
     
     <groupId>com.emsp</groupId>
-    <artifactId>gateway</artifactId>
+    <artifactId>product-service</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
     
-    <name>EMSP Gateway</name>
-    <description>API Gateway for EMSP</description>
+    <name>EMSP Product Service</name>
+    <description>Product service for EMSP</description>
     
     <properties>
         <java.version>11</java.version>
@@ -27,8 +27,13 @@
     
     <dependencies>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-gateway</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         
         <dependency>
@@ -37,14 +42,27 @@
         </dependency>
         
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
         </dependency>
         
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.emsp</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     

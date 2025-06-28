@@ -4,237 +4,150 @@ services:
   # MySQL数据库
   mysql:
     image: mysql:8.0
-    container_name: awms-mysql
-    restart: always
+    container_name: emsp-mysql
     environment:
-      MYSQL_ROOT_PASSWORD: awms123456
-      MYSQL_DATABASE: awms
-      MYSQL_USER: awms
-      MYSQL_PASSWORD: awms123456
-      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: emsp123456
+      MYSQL_DATABASE: emsp
+      MYSQL_USER: emsp
+      MYSQL_PASSWORD: emsp123456
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./sql:/docker-entrypoint-initdb.d
-    command:
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
-      - --default-time-zone=+08:00
     networks:
-      - awms-network
+      - emsp-network
 
   # Redis缓存
   redis:
-    image: redis:6.2-alpine
-    container_name: awms-redis
-    restart: always
+    image: redis:7-alpine
+    container_name: emsp-redis
     ports:
       - "6379:6379"
     volumes:
       - redis_data:/data
-    command: redis-server --appendonly yes --requirepass awms123456
     networks:
-      - awms-network
+      - emsp-network
 
-  # Nacos注册中心和配置中心
-  nacos:
-    image: nacos/nacos-server:v2.2.3
-    container_name: awms-nacos
-    restart: always
-    environment:
-      MODE: standalone
-      SPRING_DATASOURCE_PLATFORM: mysql
-      MYSQL_SERVICE_HOST: mysql
-      MYSQL_SERVICE_DB_NAME: nacos
-      MYSQL_SERVICE_PORT: 3306
-      MYSQL_SERVICE_USER: awms
-      MYSQL_SERVICE_PASSWORD: awms123456
-      MYSQL_SERVICE_DB_PARAM: characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
-      JVM_XMS: 256m
-      JVM_XMX: 256m
+  # Eureka注册中心
+  eureka:
+    image: emsp/eureka:latest
+    container_name: emsp-eureka
     ports:
-      - "8848:8848"
-      - "9848:9848"
-    volumes:
-      - nacos_logs:/home/nacos/logs
-    depends_on:
-      - mysql
-    networks:
-      - awms-network
-
-  # RabbitMQ消息队列
-  rabbitmq:
-    image: rabbitmq:3.11-management-alpine
-    container_name: awms-rabbitmq
-    restart: always
-    environment:
-      RABBITMQ_DEFAULT_USER: awms
-      RABBITMQ_DEFAULT_PASS: awms123456
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    volumes:
-      - rabbitmq_data:/var/lib/rabbitmq
-    networks:
-      - awms-network
-
-  # 认证服务
-  auth-service:
-    build:
-      context: ../auth-service
-      dockerfile: Dockerfile
-    container_name: awms-auth-service
-    restart: always
+      - "8761:8761"
     environment:
       SPRING_PROFILES_ACTIVE: docker
-      NACOS_SERVER_ADDR: nacos:8848
-      MYSQL_HOST: mysql
-      MYSQL_PORT: 3306
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-    ports:
-      - "8081:8081"
-    depends_on:
-      - mysql
-      - redis
-      - nacos
     networks:
-      - awms-network
-
-  # 用户服务
-  user-service:
-    build:
-      context: ../user-service
-      dockerfile: Dockerfile
-    container_name: awms-user-service
-    restart: always
-    environment:
-      SPRING_PROFILES_ACTIVE: docker
-      NACOS_SERVER_ADDR: nacos:8848
-      MYSQL_HOST: mysql
-      MYSQL_PORT: 3306
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-    ports:
-      - "8082:8082"
-    depends_on:
-      - mysql
-      - redis
-      - nacos
-      - auth-service
-    networks:
-      - awms-network
-
-  # 商品服务
-  product-service:
-    build:
-      context: ../product-service
-      dockerfile: Dockerfile
-    container_name: awms-product-service
-    restart: always
-    environment:
-      SPRING_PROFILES_ACTIVE: docker
-      NACOS_SERVER_ADDR: nacos:8848
-      MYSQL_HOST: mysql
-      MYSQL_PORT: 3306
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-    ports:
-      - "8083:8083"
-    depends_on:
-      - mysql
-      - redis
-      - nacos
-      - auth-service
-    networks:
-      - awms-network
-
-  # 订单服务
-  order-service:
-    build:
-      context: ../order-service
-      dockerfile: Dockerfile
-    container_name: awms-order-service
-    restart: always
-    environment:
-      SPRING_PROFILES_ACTIVE: docker
-      NACOS_SERVER_ADDR: nacos:8848
-      MYSQL_HOST: mysql
-      MYSQL_PORT: 3306
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_PORT: 5672
-    ports:
-      - "8084:8084"
-    depends_on:
-      - mysql
-      - redis
-      - nacos
-      - rabbitmq
-      - auth-service
-      - user-service
-      - product-service
-    networks:
-      - awms-network
-
-  # 朋友圈服务
-  moment-service:
-    build:
-      context: ../moment-service
-      dockerfile: Dockerfile
-    container_name: awms-moment-service
-    restart: always
-    environment:
-      SPRING_PROFILES_ACTIVE: docker
-      NACOS_SERVER_ADDR: nacos:8848
-      MYSQL_HOST: mysql
-      MYSQL_PORT: 3306
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-    ports:
-      - "8085:8085"
-    depends_on:
-      - mysql
-      - redis
-      - nacos
-      - auth-service
-      - user-service
-    networks:
-      - awms-network
+      - emsp-network
 
   # API网关
   gateway:
-    build:
-      context: ../gateway
-      dockerfile: Dockerfile
-    container_name: awms-gateway
-    restart: always
-    environment:
-      SPRING_PROFILES_ACTIVE: docker
-      NACOS_SERVER_ADDR: nacos:8848
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
+    image: emsp/gateway:latest
+    container_name: emsp-gateway
     ports:
       - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka/
     depends_on:
-      - nacos
-      - redis
-      - auth-service
-      - user-service
-      - product-service
-      - order-service
-      - moment-service
+      - eureka
     networks:
-      - awms-network
+      - emsp-network
+
+  # 认证服务
+  auth-service:
+    image: emsp/auth-service:latest
+    container_name: emsp-auth-service
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/emsp
+      SPRING_DATASOURCE_USERNAME: emsp
+      SPRING_DATASOURCE_PASSWORD: emsp123456
+    depends_on:
+      - mysql
+      - eureka
+    networks:
+      - emsp-network
+
+  # 用户服务
+  user-service:
+    image: emsp/user-service:latest
+    container_name: emsp-user-service
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/emsp
+      SPRING_DATASOURCE_USERNAME: emsp
+      SPRING_DATASOURCE_PASSWORD: emsp123456
+    depends_on:
+      - mysql
+      - eureka
+    networks:
+      - emsp-network
+
+  # 商品服务
+  product-service:
+    image: emsp/product-service:latest
+    container_name: emsp-product-service
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/emsp
+      SPRING_DATASOURCE_USERNAME: emsp
+      SPRING_DATASOURCE_PASSWORD: emsp123456
+    depends_on:
+      - mysql
+      - eureka
+    networks:
+      - emsp-network
+
+  # 订单服务
+  order-service:
+    image: emsp/order-service:latest
+    container_name: emsp-order-service
+    ports:
+      - "8084:8084"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/emsp
+      SPRING_DATASOURCE_USERNAME: emsp
+      SPRING_DATASOURCE_PASSWORD: emsp123456
+    depends_on:
+      - mysql
+      - eureka
+    networks:
+      - emsp-network
+
+  # 动态服务
+  moment-service:
+    image: emsp/moment-service:latest
+    container_name: emsp-moment-service
+    ports:
+      - "8085:8085"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/emsp
+      SPRING_DATASOURCE_USERNAME: emsp
+      SPRING_DATASOURCE_PASSWORD: emsp123456
+    depends_on:
+      - mysql
+      - eureka
+    networks:
+      - emsp-network
 
 volumes:
   mysql_data:
   redis_data:
-  nacos_logs:
-  rabbitmq_data:
 
 networks:
-  awms-network:
+  emsp-network:
     driver: bridge
